@@ -14,5 +14,7 @@ Se não entender algum conceito ou parte do problema, não é motivo para se pre
  - um README contendo os seus pensamentos ao longo do projeto para identificação e correção dos erros
 
 Faça um fork e realize commits ao longo do processo para que possamos entender o seu modo de pensar! :)
+
+# Minha primeira alteração foi no docker-compose, na qual é necessario para que todas os containers se comuniquem, uma rede em bridge.
  
   
