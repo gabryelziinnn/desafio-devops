@@ -1,0 +1,89 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-headless # servico headless, pois irá interagir com um statefulset
+  namespace: desafio-devops
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: tcp-mysql
+      port: 3306
+      targetPort: tcp-mysql
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-server # decidi inserir um statefulset, por se tratar de um banco de dados, e visando possível escalabilidade para um HPA
+  namespace: desafio-devops
+spec:
+  serviceName: mysql-headless
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes/nome: mysql
+      app.kubernetes/instancia: mysql-8.0
+  template:
+    metadata:
+      name: mysql-server
+      labels:
+        app.kubernetes/nome: mysql
+        app.kubernetes/instancia: mysql-8.0
+    spec:      
+      containers:
+        - name: mysql
+          image: gabryelziinnnnn/desafio-devops:mysqlv1 # realizei o push para meu dockerhub, para conter a imagem modificada com os parâmetros inseridos do projeto
+          imagePullPolicy: "IfNotPresent"
+          resources: # por se tratar de um banco, inseri somente os requests para um QOs:Burstable class
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          env:
+          - name: MYSQL_USER # para maior seguranca, apesar de que não foi inserido os RBACs, todas as informações sensíveis estão em secrets
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: MYSQL_USER
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: MYSQL_PASSWORD
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: MYSQL_ROOT_PASSWORD
+          - name: MYSQL_DATABASE
+            value: node_db
+          ports:
+            - name: tcp-mysql
+              containerPort: 3306
+#          readinessProbe: # uso necessário somente se houvesse um HPA atuando
+#            initialDelaySeconds: 5
+#            periodSeconds: 10
+#            timeoutSeconds: 5
+#            successThreshold: 1
+#            failureThreshold: 6
+          volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: mysql-data
+      volumes:
+      - name: mysql-data
+        persistentVolumeClaim:
+          claimName: mysql-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-data
+  namespace: desafio-devops
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 10Gi # deixei somente 10Gib por se tratar de um ambiente de teste
