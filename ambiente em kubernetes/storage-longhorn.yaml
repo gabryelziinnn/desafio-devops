@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-data
+  namespace: desafio-devops
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn # selecionado o modo de armazenamento, o mesmo irá atuar semelhante a um Daemonset, com a diferença que não serão pods, mas sim dados
+  resources:
+    requests:
+      storage: 10Gi
+
+
