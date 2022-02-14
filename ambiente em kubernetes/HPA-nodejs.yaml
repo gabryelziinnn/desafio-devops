@@ -7,9 +7,9 @@ spec:
   maxReplicas: 5
   metrics:
   - resource:
-      name: cpu
+      name: cpu # foi utilizado a cpu como métrica para funcionamento do HPA
       target:
-        averageUtilization: 70
+        averageUtilization: 70 # ao chegar em 70% do limite em CPU, um node será acrescentado
         type: Utilization
     type: Resource
   minReplicas: 2
