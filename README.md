@@ -1,4 +1,9 @@
 Minha primeira alteração foi no docker-compose, na qual é necessario para que todas os containers se comuniquem, uma rede em bridge.
+
+No arquivo connectionDB.js (dentro da pasta node), o nome do banco de dados estava incorreto, e foi alterado para o correto.
+
+No arquivo Dockerfile (dentro da pasta node), foi alterado o mesmo para que instalasse as dependências do arquivo package.json, adicionado o comando "npm install".
+
 Decidi alterar do docker compose, para um cenário no kubernetes para apresentação dos meus conhecimentos para a empresa, e também para que o mesmo seja o mais resiliente possivel.
 Kubernetes é o sistema de orquestração de containers mais utilizado no mercado, e para o mundo DevOps ele é indispensável.
 
