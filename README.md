@@ -9,7 +9,7 @@ Kubernetes é o sistema de orquestração de containers mais utilizado no mercad
 
 Utilizei como base de cluster o RKE (rancher kubernetes engine), como ingress o traefik, e como storage o Longhorn, e para administração do cluster kubernetes é indispensável o uso do RANCHER.
 
-No app-nodejs.yaml inseri o serviço na qual ele está atuando como clusterip para maior segurança( e como utilizarei o ingress para exposição poderá continuar em clusterIP), dentro do mesmo está apontando para a imagem do desafio na qual subi para o dockerhub, ainda sem alterações. Inseri um readiness probe para funcionamento correto do HPA, e também limites e request para os PODs, para que os mesmos atuem em QOs Guaranteed.
+No app-nodejs.yaml inseri o serviço na qual ele está atuando como clusterip para maior segurança( e como utilizarei o ingress para exposição poderá continuar em clusterIP), dentro do mesmo está apontando para a imagem do desafio na qual subi para o dockerhub. Inseri um readiness probe para funcionamento correto do HPA, e também limites e request para os PODs, para que os mesmos atuem em QOs Guaranteed.
 
 No HPA-nodejs.yaml, foi inserido o HPA que atuará com o deployment do app-nodejs.yaml, como métrica para que o mesmo funcione será utilizado 70% do uso da CPU do pod.
 
