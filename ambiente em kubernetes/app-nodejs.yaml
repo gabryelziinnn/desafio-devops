@@ -29,7 +29,7 @@ spec:
       containers:
       - name: express
         image: gabryelziinnnnn/desafio-devops:v1
-        readinessProbe: # por padrão terá um delay de 10 segundos (necessário para uso do HPA)          
+        readinessProbe: # por padrão terá um delay de 10 segundos para que o container fique pronto (necessário para uso do HPA)          
           httpGet: 
             path: /
             port: 3000     
