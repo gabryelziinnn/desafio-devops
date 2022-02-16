@@ -4,6 +4,7 @@ metadata:
   name: nodejs-hpa
   namespace: desafio-devops
 spec:
+  minReplicas: 2
   maxReplicas: 5
   metrics:
   - resource:
