@@ -20,7 +20,7 @@ spec:
   serviceName: mysql-headless
   replicas: 1
   updateStrategy:
-    type: RollingUpdate
+    type: Recreate # para banco de dados devemos recriá-lo caso dê algum problema.
   selector:
     matchLabels:
       app.kubernetes/nome: mysql
